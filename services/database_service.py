@@ -12,7 +12,7 @@ class DatabaseService:
         cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS records (
-                id INTEGER PRIMARY KEY,
+                id INTEGER,
                 description TEXT,
                 amount REAL,
                 type TEXT
@@ -25,9 +25,9 @@ class DatabaseService:
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO records (description, amount, type)
-            VALUES (?, ?, ?)
-        ''', (record.description, record.amount, record.type))
+            INSERT INTO records (id, description, amount, type)
+            VALUES (?, ?, ?, ?)
+        ''', (record.id, record.description, record.amount, record.type))
         conn.commit()
         conn.close()
 
@@ -50,3 +50,23 @@ class DatabaseService:
         records = cursor.fetchall()
         conn.close()
         return records
+    
+    def add_money(self, record):
+        conn = self.connect()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO records (id, description, amount, type)
+            VALUES (?, ?, ?, ?)
+        ''', (record.id, record.description, record.amount, record.type))
+        conn.commit()
+        conn.close()
+        
+    def spend_money(self, record):
+        conn = self.connect()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO records (id, description, amount, type)
+            VALUES (?, ?, ?, ?)
+        ''', (record.id, record.description, record.amount, record.type))
+        conn.commit()
+        conn.close()

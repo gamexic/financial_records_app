@@ -11,12 +11,13 @@ def create_new_account():
     # * Crear una instancia de FinancialRecord
 
     # Solicitamos al usuario los datos del registro
+    id = input("User ID: ")
     description = input("Description: ")
     amount = float(input("Amount: "))
     type = "new_account"
 
     # Agrupamos los datos en un objeto
-    new_record = FinancialRecord(description=description, amount=amount, type=type)
+    new_record = FinancialRecord(id=id, description=description, amount=amount, type=type)
 
     # * Agregar el registro a la base de datos
     db_service.add_record(new_record)
@@ -25,21 +26,25 @@ def create_new_account():
 # * Función para hacer un ingreso
 def create_new_income():
     db_service = DatabaseService('db/database.db')
+    id = input("User ID: ")
     description = input("Description: ")
     amount = float(input("Amount: "))
     type = "income"
-    new_record = FinancialRecord(description=description, amount=amount, type=type)
-    db_service.add_record(new_record)
+
+    new_record = FinancialRecord(id=id, description=description, amount=amount, type=type)
+    db_service.add_money(new_record)
 
 
 # * Función para hacer un gasto
 def create_new_expense():
     db_service = DatabaseService('db/database.db')
+    id = input("User ID: ")
     description = input("Description: ")
     amount = float(input("Amount: "))
     type = "expense"
-    new_record = FinancialRecord(description=description, amount=amount, type=type)
-    db_service.add_record(new_record)
+
+    new_record = FinancialRecord(id=id, description=description, amount=amount, type=type)
+    db_service.add_money(new_record)
 
 
 # * Función para obtener todos los registros
@@ -54,10 +59,10 @@ def get_total_balance():
     db_service = DatabaseService('db/database.db')
     records = db_service.get_records()
     total_balance = 0
-    id = input("User ID: ")
+    id = int(input("User ID: "))
     for record in records:
         if record[0] == id:
-            if record[3] == "income":
+            if record[3] == "income" or record[3] == "new_account":
                 total_balance += record[2]
             elif record[3] == "expense":
                 total_balance -= record[2]
@@ -69,10 +74,10 @@ def get_income_balance():
     db_service = DatabaseService('db/database.db')
     records = db_service.get_records()
     income_balance = 0
-    id = input("User ID: ")
+    id = int(input("User ID: "))
     for record in records:
         if record[0] == id:
-            if record[3] == "income":
+            if record[3] == "income" or record[3] == "new_account":
                 income_balance += record[2]
     return income_balance
 
@@ -82,7 +87,7 @@ def get_expense_balance():
     db_service = DatabaseService('db/database.db')
     records = db_service.get_records()
     expense_balance = 0
-    id = input("User ID: ")
+    id = int(input("User ID: "))
     for record in records:
         if record[0] == id:
             if record[3] == "expense":
